@@ -1,5 +1,7 @@
 package com.jeespring.AIPortfolio.config;
 
+import dev.langchain4j.memory.chat.ChatMemoryProvider;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
@@ -36,4 +38,13 @@ public class AiConfig {
                 .temperature(0.2)
                 .build();
     }
+
+    @Bean
+    ChatMemoryProvider chatMemoryProvider(){
+        // on a ajouter une mémoire de 12 messages à notre agent
+        return chatId -> MessageWindowChatMemory.withMaxMessages(12);
+    }
+
+
+
 }
