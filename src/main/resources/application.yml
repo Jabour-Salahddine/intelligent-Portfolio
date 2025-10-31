@@ -1,0 +1,59 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: transaction-service
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  datasource:
+    url: jdbc:h2:mem:./data/testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+# ==========================================================
+#  LangChain4j Configuration ? GitHub Models Integration
+# ==========================================================
+
+langchain4j:
+  open-ai:
+    chat-model:
+      #  Nom du modèle GitHub Models (ex : gpt-4o-mini, gpt-4o, codellama, etc.)
+      model-name: gpt-4o
+      #  Ton token GitHub personnel (PAT) ? à mettre en variable d?environnement
+      api-key: ${EXEMPLE_API}
+      #  Endpoint officiel GitHub Models
+      base-url: https://models.inference.ai.azure.com
+      # Paramètres supplémentaires
+      temperature: 0.2
+      log-requests: true
+      log-responses: true
+
+    embedding-model:
+      api-key: ${EXEMPLE_API}
+      base-url: https://models.inference.ai.azure.com
+      model-name: text-embedding-3-small
+
+
+logging:
+  level:
+    dev:
+      langchain4j: DEBUG
+    ai4j:
+      openai4j: DEBUG
+    ai:
+      djl: OFF
