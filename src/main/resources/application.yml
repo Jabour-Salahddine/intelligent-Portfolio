@@ -11,18 +11,30 @@ spring:
       max-request-size: 10MB
 
   datasource:
-    url: jdbc:h2:mem:./data/testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-  h2:
-    console:
-      enabled: true
+    url: jdbc:postgresql://localhost:5432/agenticRagDb
+    driver-class-name: org.postgresql.Driver
+    username: admin
+    password: 1234
+
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: update   # (ou create-drop en dev si tu veux tout rÃ©initialiser)
     show-sql: true
+
+  #datasource:
+  #  url: jdbc:h2:mem:./data/testdb
+  #  driverClassName: org.h2.Driver
+  #  username: sa
+  #  password: ''
+  #h2:
+  #  console:
+  #    enabled: true
+  #jpa:
+  #  database-platform: org.hibernate.dialect.H2Dialect
+  #  hibernate:
+  #    ddl-auto: update
+  #  show-sql: true
 
 
 # ==========================================================
@@ -32,13 +44,13 @@ spring:
 langchain4j:
   open-ai:
     chat-model:
-      #  Nom du modèle GitHub Models (ex : gpt-4o-mini, gpt-4o, codellama, etc.)
+      #  Nom du modï¿½le GitHub Models (ex : gpt-4o-mini, gpt-4o, codellama, etc.)
       model-name: gpt-4o
-      #  Ton token GitHub personnel (PAT) ? à mettre en variable d?environnement
+      #  Ton token GitHub personnel (PAT) ? ï¿½ mettre en variable d?environnement
       api-key: ${EXEMPLE_API}
       #  Endpoint officiel GitHub Models
       base-url: https://models.inference.ai.azure.com
-      # Paramètres supplémentaires
+      # Paramï¿½tres supplï¿½mentaires
       temperature: 0.2
       log-requests: true
       log-responses: true

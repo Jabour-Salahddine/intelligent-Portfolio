@@ -102,17 +102,25 @@
 		</dependency>
 
 		<!-- 🧠 Modèle d'embeddings (all-MiniLM-L6-v2) pour vectorisation du texte -->
+		<!--
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
 			<version>1.0.0-alpha1</version>
 		</dependency>
-
+		-->
 		<!-- 🗄️ Intégration PostgreSQL + pgvector pour le stockage vectoriel -->
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-pgvector</artifactId>
 			<version>1.0.0-alpha1</version>
+		</dependency>
+
+		<!-- PostgreSQL driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
 		</dependency>
 
 

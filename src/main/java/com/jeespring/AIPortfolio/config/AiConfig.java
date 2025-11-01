@@ -21,6 +21,7 @@ import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
+import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -89,7 +90,20 @@ public class AiConfig {
     @Bean
     EmbeddingStore<TextSegment> embeddingStore() {
 
-        return new InMemoryEmbeddingStore<>(); // Using an in-memory store for simplicity
+       // return new InMemoryEmbeddingStore<>(); // Using an in-memory store for simplicity
+        EmbeddingModel embeddingModel = embeddingModel();
+        return PgVectorEmbeddingStore.builder()
+                .host("localhost")
+                .port(5432)
+                .database("agenticRagDb")
+                .user("admin")
+                .password("1234")
+                .table("portfolio_vectors")
+                .dimension(embeddingModel.dimension())
+                .dropTableFirst(true) // remet la table à zéro au redémarrage (utile en dev)
+                .build();
+
+
     }
 
     // Load a document (cv.pdf) into the vector store at application startup :

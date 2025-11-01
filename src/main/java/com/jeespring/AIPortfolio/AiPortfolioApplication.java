@@ -14,7 +14,7 @@ public class AiPortfolioApplication {
 		SpringApplication.run(AiPortfolioApplication.class, args);
 	}
 
-
+  /*
 	@Bean
 	CommandLineRunner initDatabase(ProfileRepository profileRepository,
 								   SkillRepository skillRepository,
@@ -78,6 +78,8 @@ public class AiPortfolioApplication {
 			System.out.println("✅ Données de test initialisées avec succès !");
 		};
 	}
+
+   */
 
 
 }
