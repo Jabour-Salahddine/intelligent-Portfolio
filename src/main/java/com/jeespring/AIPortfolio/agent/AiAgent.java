@@ -10,6 +10,8 @@ public interface AiAgent {
     @SystemMessage("You are a helpful AI assistant. Provide concise and accurate responses to user prompts using the context.")
     Flux<String> chatStream(String prompt);
 
+
+
 }
 
 /*
