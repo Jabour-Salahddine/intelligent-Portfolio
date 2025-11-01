@@ -28,7 +28,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-
+import java.io.File;
+import java.io.FileInputStream;
 
 
 @Configuration
@@ -108,29 +109,39 @@ public class AiConfig {
 
     // Load a document (cv.pdf) into the vector store at application startup :
     @Bean
-    ApplicationRunner loadDocumentToVectorStore(
+    ApplicationRunner loadDocumentsToVectorStore(
             ChatLanguageModel chatLanguageModel,
             EmbeddingModel embeddingModel,
             EmbeddingStore<TextSegment> embeddingStore,
-
-            @Value("classpath:/dossier/cv.pdf") Resource pdfResource){
+            @Value("classpath:/dossier") Resource dossierRessource
+    ) {
         return args -> {
 
-            var doc = FileSystemDocumentLoader.loadDocument(pdfResource.getFile().toPath());
+            // Parser PDF
+            DocumentParser parser = new ApachePdfBoxDocumentParser();
 
+            // Configuration de l’ingestor
             var ingestor = EmbeddingStoreIngestor.builder()
-                    .documentSplitter(DocumentSplitters.recursive(1000,100,tokenizer()))
+                    .documentSplitter(DocumentSplitters.recursive(1000, 100, tokenizer()))
                     .embeddingModel(embeddingModel)
                     .embeddingStore(embeddingStore)
                     .build();
-            DocumentParser parser = new ApachePdfBoxDocumentParser();
-            Document document = parser.parse(pdfResource.getInputStream());
-            ingestor.ingest(document);
+
+            // Lister tous les fichiers PDF du dossier
+            File dossier = dossierRessource.getFile();
+            File[] fichiers = dossier.listFiles((dir, name) -> name.endsWith(".pdf"));
+
+            if (fichiers != null) {
+                for (File fichier : fichiers) {
+                    System.out.println("📄 Chargement du fichier : " + fichier.getName());
+                    Document document = parser.parse(new FileInputStream(fichier));
+                    ingestor.ingest(document);
+                }
+            } else {
+                System.out.println("Aucun fichier trouvé dans le dossier !");
+            }
         };
-
-
     }
-
     @Bean
     ContentRetriever contentRetriever(EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore){
 
